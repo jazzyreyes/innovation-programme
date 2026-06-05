@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Team-wide Innovation Programme — WealthCo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet">
+<style>
+  :root{
+    --off-white:#F6F6F6;
+    --paper:#FCFCFC;
+    --ink:#1F1F23;
+    --tealgray:#635E6E;
+    --green:#2E8871;
+    --green-bright:#31D8AE;
+    --blue:#306F93;
+    --yellow:#BD9521;
+    --line:rgba(31,31,35,.10);
+    --line-soft:rgba(31,31,35,.06);
+    --sans:'Geist',-apple-system,sans-serif;
+    --mono:'Geist Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);
+    background:var(--off-white);
+    color:var(--ink);
+    letter-spacing:-.011em;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--green);color:#fff}
+
+  /* ---------- Layout ---------- */
+  .shell{display:flex;min-height:100vh}
+  .sidebar{
+    width:264px;flex:0 0 264px;
+    background:var(--ink);color:var(--off-white);
+    position:fixed;top:0;left:0;bottom:0;
+    display:flex;flex-direction:column;
+    padding:30px 22px;z-index:50;
+    overflow-y:auto;
+  }
+  .main{margin-left:264px;flex:1;min-width:0}
+
+  /* ---------- Sidebar ---------- */
+  .wordmark{font-size:21px;font-weight:600;letter-spacing:-.04em;margin-bottom:2px}
+  .wordmark .dot{color:var(--green-bright)}
+  .side-sub{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(246,246,246,.42);margin-bottom:34px}
+  .nav-group{margin-bottom:26px}
+  .nav-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(246,246,246,.38);margin-bottom:12px;padding-left:11px}
+  .nav-item{
+    display:flex;align-items:center;gap:11px;
+    width:100%;text-align:left;border:0;background:none;cursor:pointer;
+    color:rgba(246,246,246,.66);font-family:var(--sans);font-size:13.5px;letter-spacing:-.01em;
+    padding:8px 11px;border-radius:8px;margin-bottom:2px;transition:all .16s ease;
+  }
+  .nav-item i{font-size:15px;opacity:.7;width:17px;text-align:center}
+  .nav-item:hover{background:rgba(246,246,246,.06);color:var(--off-white)}
+  .nav-item.active{background:rgba(49,216,174,.13);color:#fff}
+  .nav-item.active i{color:var(--green-bright);opacity:1}
+  .nav-num{margin-left:auto;font-family:var(--mono);font-size:10px;color:rgba(246,246,246,.3)}
+  .side-foot{margin-top:auto;padding-top:24px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:rgba(246,246,246,.32);line-height:1.7}
+  .side-foot .pill{display:inline-block;border:1px solid rgba(246,246,246,.16);border-radius:20px;padding:2px 9px;margin-top:8px;color:rgba(246,246,246,.5)}
+
+  /* ---------- Panels ---------- */
+  .panel{display:none;animation:fade .4s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .wrap{max-width:980px;margin:0 auto;padding:0 56px}
+
+  /* ---------- Hero ---------- */
+  .hero{background:var(--ink);color:var(--off-white);position:relative;overflow:hidden;padding:64px 0 70px}
+  .hero .wrap{position:relative;z-index:2}
+  .hero-swoop{position:absolute;inset:0;z-index:1;opacity:.5}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--green-bright);margin-bottom:22px}
+  .hero h1{font-size:54px;font-weight:500;letter-spacing:-.04em;line-height:1.02;margin-bottom:22px}
+  .hero h1 em{font-style:normal;color:var(--green-bright)}
+  .hero .lede{font-size:17px;line-height:1.6;color:rgba(246,246,246,.74);max-width:620px;font-weight:300}
+  .hero .lede b{color:var(--off-white);font-weight:500}
+
+  /* stat strip */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid rgba(246,246,246,.14);margin-top:48px}
+  .stat{padding:26px 22px 4px 0}
+  .stat .n{font-size:34px;font-weight:600;letter-spacing:-.04em;line-height:1}
+  .stat .n .u{font-size:15px;color:var(--green-bright);font-weight:400}
+  .stat .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(246,246,246,.5);margin-top:10px}
+
+  /* ---------- Section scaffolding ---------- */
+  .sec{padding:58px 0}
+  .sec-tag{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+  h2{font-size:32px;font-weight:500;letter-spacing:-.035em;line-height:1.08;margin-bottom:14px}
+  h2 em{font-style:normal;color:var(--green)}
+  .sec-intro{font-size:16px;color:var(--tealgray);max-width:640px;line-height:1.6;margin-bottom:38px}
+  h3{font-size:13px;font-family:var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--tealgray);margin:0 0 18px}
+
+  .divider{height:1px;background:var(--line);margin:0}
+  .wrap-divider{max-width:980px;margin:0 auto;padding:0 56px}
+
+  /* ---------- Module cards (dashboard) ---------- */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:15px;
+    padding:24px 22px 22px;text-align:left;cursor:pointer;transition:all .2s ease;
+    display:flex;flex-direction:column;min-height:172px;position:relative;
+  }
+  .card:hover{border-color:rgba(46,136,113,.5);transform:translateY(-3px);box-shadow:0 14px 32px -18px rgba(31,31,35,.28)}
+  .card .ci{width:38px;height:38px;border-radius:10px;background:rgba(46,136,113,.10);display:flex;align-items:center;justify-content:center;margin-bottom:18px}
+  .card .ci i{font-size:19px;color:var(--green)}
+  .card .cnum{position:absolute;top:22px;right:22px;font-family:var(--mono);font-size:11px;color:var(--line);color:rgba(31,31,35,.22)}
+  .card h4{font-size:17px;font-weight:600;letter-spacing:-.02em;margin-bottom:7px}
+  .card p{font-size:13px;color:var(--tealgray);line-height:1.5;flex:1}
+  .card .go{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-top:14px;display:flex;align-items:center;gap:6px}
+  .card.db .ci{background:rgba(48,111,147,.10)}
+  .card.db .ci i{color:var(--blue)}
+  .card.db .go{color:var(--blue)}
+
+  /* produces list */
+  .produces{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 30px;margin-top:6px}
+  .produces .p{display:flex;gap:12px;align-items:flex-start;font-size:15px;padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .produces .p i{color:var(--green);font-size:18px;margin-top:1px}
+
+  /* facts grid */
+  .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .fact{background:var(--paper);padding:20px 22px}
+  .fact .fl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--tealgray);margin-bottom:8px}
+  .fact .fv{font-size:15px;font-weight:500;letter-spacing:-.01em}
+  .fact .fv .note{color:var(--tealgray);font-weight:400;font-size:13px}
+
+  /* ---------- Callouts ---------- */
+  .callout{border-radius:14px;padding:22px 24px;display:flex;gap:16px;align-items:flex-start;margin-top:18px}
+  .callout i{font-size:20px;margin-top:2px;flex:0 0 auto}
+  .callout .ct{font-weight:600;font-size:14.5px;margin-bottom:5px}
+  .callout p{font-size:13.5px;line-height:1.55}
+  .callout.warn{background:rgba(189,149,33,.09);border:1px solid rgba(189,149,33,.28)}
+  .callout.warn i{color:var(--yellow)}
+  .callout.warn p{color:#7a6418}
+  .callout.green{background:rgba(46,136,113,.07);border:1px solid rgba(46,136,113,.24)}
+  .callout.green i{color:var(--green)}
+  .callout.green p{color:var(--tealgray)}
+  .callout.dark{background:var(--ink);color:rgba(246,246,246,.78)}
+  .callout.dark i{color:var(--green-bright)}
+  .callout.dark .ct{color:#fff}
+
+  .decisions{list-style:none;margin-top:6px}
+  .decisions li{display:flex;gap:13px;align-items:flex-start;padding:15px 0;border-bottom:1px solid var(--line-soft);font-size:15px}
+  .decisions li i{color:var(--yellow);font-size:18px;margin-top:1px}
+  .decisions li .sub{display:block;color:var(--tealgray);font-size:13px;margin-top:3px}
+
+  /* ---------- Agenda / timeline ---------- */
+  .agenda{border-top:1px solid var(--line)}
+  .ag-row{display:grid;grid-template-columns:120px 1fr;gap:28px;padding:22px 0;border-bottom:1px solid var(--line);align-items:start}
+  .ag-time{font-family:var(--mono);font-size:12.5px;color:var(--green);letter-spacing:.02em;padding-top:2px}
+  .ag-part{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--tealgray);margin-bottom:6px}
+  .ag-row h4{font-size:17px;font-weight:600;letter-spacing:-.02em;margin-bottom:6px}
+  .ag-row p{font-size:14px;color:var(--tealgray);line-height:1.55}
+  .merge-tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);background:rgba(48,111,147,.1);border-radius:5px;padding:2px 7px;margin-left:8px;vertical-align:middle}
+
+  /* ---------- Curriculum ---------- */
+  .phase{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);background:var(--off-white);border:1px solid var(--line);border-radius:30px;padding:6px 15px;display:inline-block;margin:30px 0 18px}
+  .topic{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:12px}
+  .topic-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .topic-num{width:30px;height:30px;border-radius:8px;background:var(--ink);color:#fff;font-family:var(--mono);font-size:13px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .topic-head h4{font-size:17.5px;font-weight:600;letter-spacing:-.02em}
+  .topic-head .ses{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--green);background:rgba(46,136,113,.1);border-radius:6px;padding:4px 9px;white-space:nowrap}
+  .topic-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:4px}
+  .tg .tgl{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--tealgray);margin-bottom:5px}
+  .tg .tgv{font-size:13.5px;line-height:1.5}
+  .seq-note{background:rgba(46,136,113,.06);border-left:3px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;margin-top:24px;font-size:14px;color:var(--ink);line-height:1.6}
+  .seq-note b{color:var(--green)}
+
+  /* ---------- Workspace pages ---------- */
+  .pages{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .pg{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+  .pg i{font-size:18px;color:var(--green);margin-top:2px}
+  .pg h4{font-size:15px;font-weight:600;margin-bottom:4px;letter-spacing:-.01em}
+  .pg p{font-size:13px;color:var(--tealgray);line-height:1.5}
+
+  /* artifact field chips */
+  .artifact{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:12px}
+  .artifact h4{font-size:16px;font-weight:600;margin-bottom:4px}
+  .artifact .ad{font-size:13.5px;color:var(--tealgray);margin-bottom:14px;line-height:1.5}
+  .chips{display:flex;flex-wrap:wrap;gap:7px}
+  .chip{font-family:var(--mono);font-size:11px;letter-spacing:.01em;color:var(--tealgray);background:var(--off-white);border:1px solid var(--line);border-radius:7px;padding:5px 10px}
+
+  /* db spec table */
+  .dbspec{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px;background:var(--paper)}
+  .dbspec-head{background:var(--ink);color:#fff;padding:16px 22px;display:flex;align-items:center;gap:12px}
+  .dbspec-head i{color:var(--green-bright);font-size:18px}
+  .dbspec-head h4{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .dbspec-head .rel{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:rgba(246,246,246,.55)}
+  .dbspec-body{padding:18px 22px}
+  .dbspec-body .prop{display:flex;gap:14px;padding:9px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px;align-items:baseline}
+  .dbspec-body .prop:last-child{border-bottom:0}
+  .dbspec-body .pn{font-weight:500;min-width:170px;flex:0 0 auto}
+  .dbspec-body .pt{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:var(--green);text-transform:uppercase}
+  .dbspec-body .pd{color:var(--tealgray)}
+
+  .lead-note{font-size:12.5px;color:var(--tealgray);font-style:italic;margin-top:8px}
+  .badge-prop{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:5px;margin-left:8px}
+  .b-proposed{background:rgba(189,149,33,.12);color:var(--yellow)}
+  .b-bryton{background:rgba(46,136,113,.12);color:var(--green)}
+  .b-onepager{background:rgba(48,111,147,.12);color:var(--blue)}
+
+  .src-legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:26px;padding-top:20px;border-top:1px solid var(--line)}
+  .src-legend .li{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--tealgray)}
+  .src-legend .dot{width:9px;height:9px;border-radius:50%}
+
+  .topbar{display:none}
+
+  /* status badges */
+  .st{display:inline-block;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:5px;margin-left:8px;vertical-align:middle;font-weight:500;white-space:nowrap}
+  .st.conf{background:rgba(46,136,113,.12);color:var(--green)}
+  .st.prop{background:rgba(189,149,33,.13);color:var(--yellow)}
+  .st.sup{background:rgba(48,111,147,.12);color:var(--blue)}
+  .st.imp{background:rgba(99,94,110,.16);color:var(--tealgray)}
+
+  /* source key card */
+  .statkey{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin-bottom:8px}
+  .statkey-title{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--tealgray);margin-bottom:14px}
+  .statkey-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .statkey-item{display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:var(--tealgray);line-height:1.45}
+  .statkey-item .b{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:5px;font-weight:500;align-self:flex-start}
+
+  /* inline status note inside modules */
+  .stat-note{background:rgba(189,149,33,.05);border-left:3px solid var(--yellow);border-radius:0 10px 10px 0;padding:14px 18px;margin:6px 0 26px;font-size:13px;color:var(--tealgray);line-height:1.55}
+  .stat-note b{color:var(--ink)}
+
+  @media (max-width:900px){
+    .sidebar{transform:translateX(-100%);transition:transform .25s}
+    .sidebar.open{transform:none}
+    .main{margin-left:0}
+    .topbar{display:flex;align-items:center;gap:14px;padding:16px 22px;background:var(--ink);color:#fff;position:sticky;top:0;z-index:40}
+    .topbar .wordmark{font-size:18px;margin:0}
+    .menu-btn{background:none;border:0;color:#fff;font-size:22px;cursor:pointer}
+    .wrap{padding:0 26px}
+    .hero h1{font-size:38px}
+    .stats,.cards,.facts,.topic-grid,.pages,.produces{grid-template-columns:1fr 1fr}
+    .ag-row{grid-template-columns:90px 1fr;gap:16px}
+  }
+  @media (max-width:560px){
+    .stats,.cards,.facts,.topic-grid,.pages,.produces{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="menu-btn" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="ri-menu-line"></i></button>
+  <span class="wordmark">WealthCo<span class="dot">.</span></span>
+</div>
+
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="wordmark">WealthCo<span class="dot">.</span></div>
+    <div class="side-sub">Innovation Programme · Hub</div>
+
+    <div class="nav-group">
+      <div class="nav-label">Overview</div>
+      <button class="nav-item active" data-p="dashboard"><i class="ri-dashboard-3-line"></i> Dashboard</button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">The plan</div>
+      <button class="nav-item" data-p="format"><i class="ri-layout-row-line"></i> Session format <span class="nav-num">01</span></button>
+      <button class="nav-item" data-p="curriculum"><i class="ri-route-line"></i> Curriculum arc <span class="nav-num">02</span></button>
+      <button class="nav-item" data-p="session1"><i class="ri-flag-line"></i> Session 1 plan <span class="nav-num">03</span></button>
+      <button class="nav-item" data-p="workspace"><i class="ri-stack-line"></i> The workspace <span class="nav-num">04</span></button>
+    </div>
+
+    <div class="nav-group">
+      <div class="nav-label">Databases</div>
+      <button class="nav-item" data-p="databases"><i class="ri-database-2-line"></i> Database spec <span class="nav-num">05</span></button>
+    </div>
+
+    <div class="side-foot">
+      WealthCo · Innovation Programme
+      <br><span class="pill">Internal hub</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <section class="panel active" data-panel="dashboard">
+      <div class="hero">
+        <svg class="hero-swoop" viewBox="0 0 1000 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sw" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#31D8AE" stop-opacity=".5"/>
+              <stop offset="1" stop-color="#2E8871" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M-50 320 C 200 180, 380 360, 620 200 S 980 60, 1100 120" fill="none" stroke="url(#sw)" stroke-width="2.5" opacity=".7"/>
+          <path d="M-50 380 C 250 280, 420 400, 700 260 S 980 160, 1100 200" fill="none" stroke="url(#sw)" stroke-width="1.5" opacity=".4"/>
+        </svg>
+        <div class="wrap">
+          <div class="eyebrow">Team-wide Innovation Programme · Internal hub</div>
+          <h1>Team-wide<br>Innovation <em>Programme</em></h1>
+          <p class="lede">A standing Innovation Session that consolidates workflows into a central SOP repository, trains the team to use it, scans the market for tools worth adopting, and surfaces ways each leader can raise the business. <b>A working block, not a status meeting.</b></p>
+
+          <div class="stats">
+            <div class="stat"><div class="n">9–10</div><div class="l">Sessions in the arc</div></div>
+            <div class="stat"><div class="n">~12</div><div class="l">Strike team members</div></div>
+            <div class="stat"><div class="n">90<span class="u"> min</span></div><div class="l">Per session</div></div>
+            <div class="stat"><div class="n">4</div><div class="l">Workspace libraries</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap">
+        <div class="sec">
+          <div class="sec-tag">Modules</div>
+          <h2>The <em>hub</em></h2>
+          <p class="sec-intro">Everything that makes up the initiative, the plan on the left, the working databases on the right. Click any card to open it.</p>
+          <div class="cards">
+            <button class="card" data-p="format">
+              <div class="ci"><i class="ri-layout-row-line"></i></div><span class="cnum">01</span>
+              <h4>Session format</h4>
+              <p>The standing four-part agenda every session follows: wins, teach, work, commit.</p>
+              <span class="go">Open <i class="ri-arrow-right-line"></i></span>
+            </button>
+            <button class="card" data-p="curriculum">
+              <div class="ci"><i class="ri-route-line"></i></div><span class="cnum">02</span>
+              <h4>Curriculum arc</h4>
+              <p>The teach sequence across the term, opening with Workflow Archaeology.</p>
+              <span class="go">Open <i class="ri-arrow-right-line"></i></span>
+            </button>
+            <button class="card" data-p="session1">
+              <div class="ci"><i class="ri-flag-line"></i></div><span class="cnum">03</span>
+              <h4>Session 1 plan</h4>
+              <p>The full kickoff agenda, pre-work, and the four-question mapping framework.</p>
+              <span class="go">Open <i class="ri-arrow-right-line"></i></span>
+            </button>
+            <button class="card" data-p="workspace">
+              <div class="ci"><i class="ri-stack-line"></i></div><span class="cnum">04</span>
+              <h4>The workspace</h4>
+              <p>The Loop team workspace structure and the artifacts to build before session 1.</p>
+              <span class="go">Open <i class="ri-arrow-right-line"></i></span>
+            </button>
+            <button class="card db" data-p="databases">
+              <div class="ci"><i class="ri-database-2-line"></i></div><span class="cnum">05</span>
+              <h4>Database spec</h4>
+              <p>Sessions, Workflow Library, Experiment Tracker, Curriculum, Prompts, Resources.</p>
+              <span class="go">Open <i class="ri-arrow-right-line"></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap-divider"><div class="divider"></div></div>
+
+      <div class="wrap">
+        <div class="sec">
+          <div class="sec-tag">Outcomes</div>
+          <h2>What this <em>produces</em></h2>
+          <div class="produces">
+            <div class="p"><i class="ri-checkbox-circle-fill"></i><span>A central, maintained SOP repository</span></div>
+            <div class="p"><i class="ri-checkbox-circle-fill"></i><span>A team trained and actively using it</span></div>
+            <div class="p"><i class="ri-checkbox-circle-fill"></i><span>A running evaluation of tools, tech, and AI capabilities</span></div>
+            <div class="p"><i class="ri-checkbox-circle-fill"></i><span>A visible, accountable list of commitments and experiments</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wrap-divider"><div class="divider"></div></div>
+
+      <div class="wrap">
+        <div class="sec">
+          <div class="sec-tag">At a glance</div>
+          <h2>The <em>essentials</em></h2>
+          <div class="facts">
+            <div class="fact"><div class="fl">Format</div><div class="fv">Standing working block, four parts</div></div>
+            <div class="fact"><div class="fl">Length</div><div class="fv">90 minutes</div></div>
+            <div class="fact"><div class="fl">Day</div><div class="fv">Thursday afternoon</div></div>
+            <div class="fact"><div class="fl">Cadence</div><div class="fv">Bi-weekly to start</div></div>
+            <div class="fact"><div class="fl">Tool</div><div class="fv">Microsoft Loop · Teams channel</div></div>
+            <div class="fact"><div class="fl">Hands-on</div><div class="fv">Claude, across the team</div></div>
+            <div class="fact"><div class="fl">Attendees</div><div class="fv">~12 across business units</div></div>
+            <div class="fact"><div class="fl">Lead</div><div class="fv">Bryton · facilitator + contributor</div></div>
+            <div class="fact"><div class="fl">90-day goal</div><div class="fv">Captured, AI-enabled SOP structure across the business</div></div>
+          </div>
+
+          <div class="callout warn">
+            <i class="ri-shield-keyhole-line"></i>
+            <div><div class="ct">A note on client information</div><p>When working in Claude, please keep things general: avoid pasting client names, account numbers, or any personally identifiable information. Anonymise and describe instead. This keeps the work safe while we continue to evolve our data infrastructure.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SESSION FORMAT ===================== -->
+    <section class="panel" data-panel="format">
+      <div class="wrap">
+        <div class="sec">
+          <div class="sec-tag">Module 01</div>
+          <h2>Session <em>format</em></h2>
+          <p class="sec-intro">Every session runs the same four-part shape so it becomes muscle memory. Roughly half on education and capturing learning, half on applying it to real workflows. The first two sessions are more setup-focused.</p>
+
+          <div class="agenda">
+            <div class="ag-row">
+              <div class="ag-time">0:00–0:15</div>
+              <div><div class="ag-part">Part 1 · 15 min</div><h4>Wins & learnings</h4><p>Each person shares one thing they tried since last session and what they learned. This is the accountability moment, homework made visible. Bryton facilitates, connecting patterns across business units.</p></div>
+            </div>
+            <div class="ag-row">
+              <div class="ag-time">0:15–0:35</div>
+              <div><div class="ag-part">Part 2 · 20 min</div><h4>Teach</h4><p>One concept, framework, or skill per session, drawn from The AI-Driven Leader and Ideal Flow. Ends with how it applies to the business specifically. Bryton or a team member teaches what they are learning.</p></div>
+            </div>
+            <div class="ag-row">
+              <div class="ag-time">0:35–1:15</div>
+              <div><div class="ag-part">Part 3 · 40 min</div><h4>Work <span class="merge-tag">+ market & tool scan</span></h4><p>The working block where SOPs get captured and workflows redesigned, rotating one person's workflow under the microscope each session. A short market and tool scan folds in here: surface new tools and AI capabilities and decide what to evaluate.</p></div>
+            </div>
+            <div class="ag-row">
+              <div class="ag-time">1:15–1:30</div>
+              <div><div class="ag-part">Part 4 · 15 min</div><h4>Commit & close</h4><p>Each person commits to one experiment or SOP draft before next session, written down and logged in the tracker. Each attendee can also name one opportunity to raise the business, captured as a commitment.</p></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CURRICULUM ===================== -->
+    <section class="panel" data-panel="curriculum">
+      <div class="wrap">
+        <div class="sec">
+          <div class="sec-tag">Module 02</div>
+          <h2>Curriculum <em>arc</em></h2>
+          <p class="sec-intro">The teach sequence builds confidence as it goes: see your work, choose what to transform, do it well, do it safely, then apply it to the firm's most important work. Roughly 9–10 sessions across about 20 weeks at bi-weekly cadence, through end of Q3.</p>
+
+          <div class="topic">
+            <div class="topic-head"><div class="topic-num">1</div><h4>Workflow archaeology</h4><span class="ses">2–3 sessions · opener</span></div>
+            <p class="sec-intro" style="margin-bottom:14px">See your own work as a system before transforming it.</p>
+            <div class="topic-grid">
+              <div class="tg"><div class="tgl">Core skill</div><div class="tgv">Mapping a current-state workflow honestly, including the "shadow work" nobody documents</div></div>
+              <div class="tg"><div class="tgl">Why it fits</div><div class="tgv">You can't AI-enable what you can't see; skipping this automates chaos</div></div>
+              <div class="tg"><div class="tgl">Output</div><div class="tgv">Every member maps one workflow they own with brutal honesty</div></div>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-head"><div class="topic-num">2</div><h4>Identifying high-leverage workflows</h4><span class="ses">1–2 sessions</span></div>
+            <div class="topic-grid">
+              <div class="tg"><div class="tgl">Core skill</div><div class="tgv">A scoring framework: frequency, time spent, error rate, AI-suitability, business impact</div></div>
+              <div class="tg"><div class="tgl">Why it fits</div><div class="tgv">Serves the 90-day goal of shipping real transformations; filters the noise</div></div>
+              <div class="tg"><div class="tgl">Output</div><div class="tgv">A ranked transformation backlog the team owns together</div></div>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-head"><div class="topic-num">3</div><h4>Prompting as a professional skill</h4><span class="ses">2 sessions</span></div>
+            <div class="topic-grid">
+              <div class="tg"><div class="tgl">Core skill</div><div class="tgv">Structured prompting, context engineering, prompt libraries, iteration loops</div></div>
+              <div class="tg"><div class="tgl">Why it fits</div><div class="tgv">Most teams plateau at basic prompts and never get the real value</div></div>
+              <div class="tg"><div class="tgl">Output</div><div class="tgv">Each person builds a personal prompt library of 5–10 prompts they use weekly</div></div>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-head"><div class="topic-num">4</div><h4>The trust stack</h4><span class="ses">1 session / recurring opener</span></div>
+            <div class="topic-grid">
+              <div class="tg"><div class="tgl">Core skill</div><div class="tgv">Verification habits; knowing AI's failure modes; building review checkpoints</div></div>
+              <div class="tg"><div class="tgl">Why it fits</div><div class="tgv">A regulated industry has compliance stakes; build the muscle early</div></div>
+              <div class="tg"><div class="tgl">Output</div><div class="tgv">A shared "trust ladder" for when AI output ships vs needs human review</div></div>
+            </div>
+          </div>
+
+          <div class="topic">
+            <div class="topic-head"><div class="topic-num">5</div><h4>AI-augmented client conversations</h4><span class="ses">3 sessions · advisors co-lead</span></div>
+            <div class="topic-grid">
+              <div class="tg"><div class="tgl">Core skill</div><div class="tgv">Using AI for prep, summarization, scenario modeling, follow-up, personalization at scale</div></div>
+              <div class="tg"><div class="tgl">Why it fits</div><div class="tgv">Ties to Advisor Desk and the firm's strategic direction; real, not theoretical</div></div>
+              <div class="tg"><div class="tgl">Output</div><div class="tgv">2–3 advisor workflows redesigned with AI augmentation</div></div>
+            </div>
+          </div>
+
+          <div class="seq-note"><b>Recommended sequence:</b> Workflow archaeology → high-leverage workflows → prompting → trust stack → AI-augmented client conversations. You move from <b>seeing</b> the work, to <b>choosing</b> what to transform, to <b>doing it well</b>, to <b>doing it safely</b>, to doing it in the highest-stakes context. Each phase compounds the last.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SESSION 1 ===================== -->
+    <section class="panel" data-panel="session1">
+      <div class="wrap">
+        <div class="sec">
+          <div class="sec-tag">Module 03</div>
+          <h2>Session 1 <em>plan</em></h2>
+          <p class="sec-intro">Kickoff + workflow archaeology, part 1. 90 minutes, in person if possible. Open with stakes and an invitation, not content.</p>
+
+          <div class="facts" style="grid-template-columns:repeat(3,1fr);margin-bottom:30px">
+            <div class="fact"><div class="fl">Title</div><div class="fv">Kickoff + Workflow Archaeology Pt 1</div></div>
+            <div class="fact"><div class="fl">Duration</div><div class="fv">90 minutes</div></div>
+            <div class="fact"><div class="fl">Location</div><div class="fv">In person if possible</div></div>
+          </div>
+
+          <div class="callout green" style="margin-bottom:30px">
+            <i class="ri-mail-send-line"></i>
+            <div><div class="ct">Pre-work, sent a week ahead</div><p>Watch a short workflow-mapping video, and come prepared to talk about one workflow you own that you find frustrating, repetitive, or time-consuming. Don't document it yet, just have it in your head.</p></div>
+          </div>
+
+          <h3>Agenda</h3>
+          <div class="agenda">
+            <div class="ag-row"><div class="ag-time">0:00–0:10</div><div><div class="ag-part">10 min</div><h4>Welcome & why</h4><p>Why this strike team exists, what success looks like at 90 days and 12 months, why these people were chosen, and the bar: everyone has Claude, everyone experiments, everyone commits. Tone: invitation, not assignment.</p></div></div>
+            <div class="ag-row"><div class="ag-time">0:10–0:20</div><div><div class="ag-part">10 min</div><h4>How we work</h4><p>Walk through the cadence, the four-part structure, the Loop workspace on screen, and the non-negotiables: homework gets done, experiments tracked, commitments visible.</p></div></div>
+            <div class="ag-row"><div class="ag-time">0:20–0:45</div><div><div class="ag-part">25 min · teach</div><h4>Workflow archaeology</h4><p>You can't transform what you can't see. Shadow work, the undocumented version people actually do, is where the biggest opportunities live. Then the four-question framework for mapping a workflow honestly.</p></div></div>
+            <div class="ag-row"><div class="ag-time">0:45–1:15</div><div><div class="ag-part">30 min · work</div><h4>Map your first workflow</h4><p>10 min solo mapping using the four-question framework, 15 min in cross-unit pairs walking each other through, 5 min group share of what surprised them.</p></div></div>
+            <div class="ag-row"><div class="ag-time">1:15–1:30</div><div><div class="ag-part">15 min · commit</div><h4>Commit & close</h4><p>Each person commits to finishing their workflow map before next session and identifying one pain point or AI opportunity. Logged in the Experiment Tracker. Close by previewing session 2.</p></div></div>
+          </div>
+
+          <h3 style="margin-top:38px">The four-question framework</h3>
+          <div class="facts" style="grid-template-columns:repeat(2,1fr)">
+            <div class="fact"><div class="fl">Question 1</div><div class="fv">What triggers it? <span class="note">event, request, escalation</span></div></div>
+            <div class="fact"><div class="fl">Question 2</div><div class="fv">What are the actual steps? <span class="note">the real version, including workarounds</span></div></div>
+            <div class="fact"><div class="fl">Question 3</div><div class="fv">Where does it break? <span class="note">delays, errors, frustration, rework</span></div></div>
+            <div class="fact"><div class="fl">Question 4</div><div class="fv">What does "done" look like? <span class="note">clear handoff, finished artifact, decision</span></div></div>
+          </div>
+
+          <div class="callout dark" style="margin-top:24px">
+            <i class="ri-time-line"></i>
+            <div><div class="ct">Post-session, within 24 hours</div><p>A recap goes out (from Bryton or Jazzy): 3–5 bullets, link to the Loop workspace, a reminder of the commitments made, and the date and time of session 2.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== WORKSPACE ===================== -->
+    <section class="panel" data-panel="workspace">
+      <div class="wrap">
+        <div class="sec">
+          <div class="sec-tag">Module 04</div>
+          <h2>The <em>workspace</em></h2>
+          <p class="sec-intro">The team works day to day in a single Microsoft Loop workspace, embedded in a dedicated Teams channel. Seven pages, built minimally before session 1 and grown as the team needs them.</p>
+
+          <h3>Loop workspace pages</h3>
+          <div class="pages">
+            <div class="pg"><i class="ri-home-4-line"></i><div><h4>Home / start here</h4><p>Mission, cadence, roster, quick links, current focus.</p></div></div>
+            <div class="pg"><i class="ri-calendar-event-line"></i><div><h4>Session hub</h4><p>Master index of sessions, upcoming and past, with the curriculum arc.</p></div></div>
+            <div class="pg"><i class="ri-flow-chart"></i><div><h4>Workflow library</h4><p>The SOP capture. Each row links to a full SOP child page.</p></div></div>
+            <div class="pg"><i class="ri-test-tube-line"></i><div><h4>Experiment tracker</h4><p>Commitments and experiments between sessions. The accountability artifact.</p></div></div>
+            <div class="pg"><i class="ri-book-open-line"></i><div><h4>Curriculum library</h4><p>Where teach content lives so it's reusable, by phase.</p></div></div>
+            <div class="pg"><i class="ri-quill-pen-line"></i><div><h4>Prompt library</h4><p>Shared library of prompts the team is using and refining.</p></div></div>
+            <div class="pg"><i class="ri-links-line"></i><div><h4>Resources</h4><p>Curated reading, videos, frameworks, tools. Not a dumping ground.</p></div></div>
+          </div>
+
+          <h3 style="margin-top:40px">Three artifacts to build before session 1</h3>
+
+          <div class="artifact">
+            <h4>SOP capture template</h4>
+            <p class="ad">Every workflow that comes up in session gets a record.</p>
+            <div class="chips"><span class="chip">Process name</span><span class="chip">Owner</span><span class="chip">Current state (steps)</span><span class="chip">Pain points</span><span class="chip">Frequency</span><span class="chip">Time spent</span><span class="chip">AI / automation candidates</span><span class="chip">New state</span><span class="chip">Status</span></div>
+          </div>
+          <div class="artifact">
+            <h4>Experiment tracker</h4>
+            <p class="ad">Visible to the whole team. Every experiment has a defined success / kill line before it starts.</p>
+            <div class="chips"><span class="chip">Who</span><span class="chip">What they're trying</span><span class="chip">Hypothesis</span><span class="chip">Result</span><span class="chip">Learning</span><span class="chip">Decision (kill / scale / iterate)</span></div>
+          </div>
+          <div class="artifact">
+            <h4>AI fluency curriculum</h4>
+            <p class="ad">12–16 teach topics, sequenced. Pulls heavily from The AI-Driven Leader and Ideal Flow.</p>
+            <div class="chips"><span class="chip">Topic</span><span class="chip">Phase</span><span class="chip">Sequence</span><span class="chip">Framework source</span><span class="chip">Linked resources</span></div>
+          </div>
+
+          <div class="callout warn">
+            <i class="ri-error-warning-line"></i>
+            <div><div class="ct">A watch-out on Loop</div><p>Loop's table features are weaker than Notion or Airtable. If the experiment tracker gets messy, move just that one piece to a simple SharePoint list or Excel in Teams; keep SOPs and curriculum in Loop.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== DATABASES ===================== -->
+    <section class="panel" data-panel="databases">
+      <div class="wrap">
+        <div class="sec">
+          <div class="sec-tag">Module 05</div>
+          <h2>Database <em>spec</em></h2>
+          <p class="sec-intro">The structure for the Notion backend, mirrored into the Loop workspace as the team's front end. Six related databases, wired so a session links to its curriculum topic and the commitments made, and each experiment links to the workflow it targets.</p>
+
+          <div class="dbspec">
+            <div class="dbspec-head"><i class="ri-calendar-event-line"></i><h4>Sessions</h4><span class="rel">→ Curriculum, Experiments</span></div>
+            <div class="dbspec-body">
+              <div class="prop"><span class="pn">Session name</span><span class="pd"><span class="pt">Title</span></span></div>
+              <div class="prop"><span class="pn">Date · Number</span><span class="pd"><span class="pt">Date · Number</span></span></div>
+              <div class="prop"><span class="pn">Topic</span><span class="pd"><span class="pt">Relation</span> to Curriculum</span></div>
+              <div class="prop"><span class="pn">Facilitator · Location</span><span class="pd"><span class="pt">Text</span></span></div>
+              <div class="prop"><span class="pn">Status</span><span class="pd"><span class="pt">Select</span> Planned · Pre-work sent · Complete</span></div>
+              <div class="prop"><span class="pn">Pre-work · Recap · Recording</span><span class="pd"><span class="pt">Text · URL</span></span></div>
+              <div class="prop"><span class="pn">Commitments</span><span class="pd"><span class="pt">Relation</span> to Experiments</span></div>
+            </div>
+          </div>
+
+          <div class="dbspec">
+            <div class="dbspec-head"><i class="ri-flow-chart"></i><h4>Workflow / SOP Library</h4><span class="rel">→ Sessions, Experiments</span></div>
+            <div class="dbspec-body">
+              <div class="prop"><span class="pn">Workflow name · Owner</span><span class="pd"><span class="pt">Title · Person</span></span></div>
+              <div class="prop"><span class="pn">Business unit</span><span class="pd"><span class="pt">Select</span></span></div>
+              <div class="prop"><span class="pn">Current state documented</span><span class="pd"><span class="pt">Yes/No · Link</span></span></div>
+              <div class="prop"><span class="pn">Pain points · Frequency</span><span class="pd"><span class="pt">Text · Select</span></span></div>
+              <div class="prop"><span class="pn">Time spent per occurrence</span><span class="pd"><span class="pt">Text</span></span></div>
+              <div class="prop"><span class="pn">AI / automation score</span><span class="pd"><span class="pt">Number</span> 1–5</span></div>
+              <div class="prop"><span class="pn">Status</span><span class="pd"><span class="pt">Select</span> Mapped · In redesign · Shipped · Archived</span></div>
+              <div class="prop"><span class="pn">Full SOP</span><span class="pd"><span class="pt">Child page</span> per row</span></div>
+            </div>
+          </div>
+
+          <div class="dbspec">
+            <div class="dbspec-head"><i class="ri-test-tube-line"></i><h4>Experiment Tracker</h4><span class="rel">→ Workflows, Sessions</span></div>
+            <div class="dbspec-body">
+              <div class="prop"><span class="pn">Experimenter</span><span class="pd"><span class="pt">Person</span></span></div>
+              <div class="prop"><span class="pn">Description · Hypothesis</span><span class="pd"><span class="pt">Text</span></span></div>
+              <div class="prop"><span class="pn">Success criteria</span><span class="pd"><span class="pt">Text</span> the kill / scale line</span></div>
+              <div class="prop"><span class="pn">Status</span><span class="pd"><span class="pt">Select</span> Not started · In progress · Complete · Killed · Scaled</span></div>
+              <div class="prop"><span class="pn">Result · Learning</span><span class="pd"><span class="pt">Text</span></span></div>
+              <div class="prop"><span class="pn">Date committed · completed</span><span class="pd"><span class="pt">Date</span></span></div>
+              <div class="prop"><span class="pn">Related workflow · session</span><span class="pd"><span class="pt">Relation</span></span></div>
+            </div>
+          </div>
+
+          <div class="dbspec">
+            <div class="dbspec-head"><i class="ri-book-open-line"></i><h4>Curriculum Library</h4><span class="rel">→ Sessions, Resources</span></div>
+            <div class="dbspec-body">
+              <div class="prop"><span class="pn">Topic name · Phase</span><span class="pd"><span class="pt">Title · Select</span></span></div>
+              <div class="prop"><span class="pn">Sequence</span><span class="pd"><span class="pt">Number</span></span></div>
+              <div class="prop"><span class="pn">Sessions taught</span><span class="pd"><span class="pt">Relation</span> to Sessions</span></div>
+              <div class="prop"><span class="pn">Framework source</span><span class="pd"><span class="pt">Select</span> AI-Driven Leader · Ideal Flow · Other</span></div>
+              <div class="prop"><span class="pn">Status</span><span class="pd"><span class="pt">Select</span> Planned · Taught</span></div>
+              <div class="prop"><span class="pn">Teach notes</span><span class="pd"><span class="pt">Child page</span> per topic</span></div>
+            </div>
+          </div>
+
+          <div class="dbspec">
+            <div class="dbspec-head"><i class="ri-quill-pen-line"></i><h4>Prompt Library</h4></div>
+            <div class="dbspec-body">
+              <div class="prop"><span class="pn">Prompt name · Use case</span><span class="pd"><span class="pt">Title · Text</span></span></div>
+              <div class="prop"><span class="pn">Author</span><span class="pd"><span class="pt">Person</span></span></div>
+              <div class="prop"><span class="pn">Prompt text · Notes</span><span class="pd"><span class="pt">Text</span></span></div>
+              <div class="prop"><span class="pn">Rating</span><span class="pd"><span class="pt">Number</span> 1–5</span></div>
+            </div>
+          </div>
+
+          <div class="dbspec">
+            <div class="dbspec-head"><i class="ri-links-line"></i><h4>Resources</h4><span class="rel">→ Curriculum</span></div>
+            <div class="dbspec-body">
+              <div class="prop"><span class="pn">Title · Type</span><span class="pd"><span class="pt">Title · Select</span> Book · Article · Video · Tool</span></div>
+              <div class="prop"><span class="pn">Link · Notes</span><span class="pd"><span class="pt">URL · Text</span></span></div>
+              <div class="prop"><span class="pn">Related topic</span><span class="pd"><span class="pt">Relation</span> to Curriculum</span></div>
+            </div>
+          </div>
+
+          <p class="lead-note">Recommended start: stand up Sessions, Workflow Library, and Experiment Tracker first; add Curriculum, Prompt, and Resources as the arc gets going.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const items=document.querySelectorAll('.nav-item');
+  const panels=document.querySelectorAll('.panel');
+  function go(p){
+    panels.forEach(x=>x.classList.toggle('active',x.dataset.panel===p));
+    items.forEach(x=>x.classList.toggle('active',x.dataset.p===p));
+    window.scrollTo({top:0,behavior:'instant'});
+    document.querySelector('.sidebar').classList.remove('open');
+  }
+  items.forEach(b=>b.addEventListener('click',()=>go(b.dataset.p)));
+  document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>go(c.dataset.p)));
+</script>
+</body>
+</html>
