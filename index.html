@@ -245,6 +245,19 @@
   @media (max-width:560px){
     .stats,.cards,.facts,.topic-grid,.pages,.produces{grid-template-columns:1fr}
   }
+
+  /* ---------- Back button ---------- */
+  .back-btn{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:var(--mono);font-size:12px;font-weight:500;
+    letter-spacing:.02em;text-transform:uppercase;
+    color:var(--tealgray);background:var(--paper);
+    border:1px solid var(--line);border-radius:999px;
+    padding:8px 15px 8px 12px;margin-bottom:22px;
+    cursor:pointer;transition:all .15s ease;
+  }
+  .back-btn:hover{color:var(--ink);border-color:rgba(31,31,35,.22);transform:translateX(-2px)}
+  .back-btn i{font-size:15px}
 </style>
 </head>
 <body>
@@ -664,14 +677,36 @@
 <script>
   const items=document.querySelectorAll('.nav-item');
   const panels=document.querySelectorAll('.panel');
-  function go(p){
+  function go(p,push){
     panels.forEach(x=>x.classList.toggle('active',x.dataset.panel===p));
     items.forEach(x=>x.classList.toggle('active',x.dataset.p===p));
     window.scrollTo({top:0,behavior:'instant'});
     document.querySelector('.sidebar').classList.remove('open');
+    if(push!==false){history.pushState({panel:p},'',(p==='dashboard'?'#':'#'+p));}
   }
   items.forEach(b=>b.addEventListener('click',()=>go(b.dataset.p)));
   document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>go(c.dataset.p)));
+
+  // Add a "Back to dashboard" button to every panel except the dashboard
+  panels.forEach(panel=>{
+    if(panel.dataset.panel==='dashboard') return;
+    const wrap=panel.querySelector('.wrap')||panel;
+    const back=document.createElement('button');
+    back.className='back-btn';
+    back.innerHTML='<i class="ri-arrow-left-line"></i> Back to dashboard';
+    back.addEventListener('click',()=>go('dashboard'));
+    wrap.insertBefore(back,wrap.firstChild);
+  });
+
+  // Make the phone/browser back button return to the previous panel
+  window.addEventListener('popstate',e=>{
+    const p=(e.state&&e.state.panel)||'dashboard';
+    go(p,false);
+  });
+  // Seed initial history state + honor a #panel in the URL on load
+  const start=(location.hash||'').replace('#','');
+  if(start&&document.querySelector('.panel[data-panel="'+start+'"]')){go(start,false);history.replaceState({panel:start},'','#'+start);}
+  else{history.replaceState({panel:'dashboard'},'','#');}
 </script>
 </body>
 </html>
