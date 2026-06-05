@@ -682,7 +682,15 @@
     items.forEach(x=>x.classList.toggle('active',x.dataset.p===p));
     window.scrollTo({top:0,behavior:'instant'});
     document.querySelector('.sidebar').classList.remove('open');
-    if(push!==false){history.pushState({panel:p},'',(p==='dashboard'?'#':'#'+p));}
+    if(push!==false){safeState('push',p);}
+  }
+  // history.pushState/replaceState throw on file:// or sandboxed origins — guard them
+  function safeState(kind,p){
+    try{
+      const url=(p==='dashboard'?'#':'#'+p);
+      if(kind==='push')history.pushState({panel:p},'',url);
+      else history.replaceState({panel:p},'',url);
+    }catch(e){/* no-op: nav still works via buttons */}
   }
   items.forEach(b=>b.addEventListener('click',()=>go(b.dataset.p)));
   document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>go(c.dataset.p)));
@@ -705,8 +713,8 @@
   });
   // Seed initial history state + honor a #panel in the URL on load
   const start=(location.hash||'').replace('#','');
-  if(start&&document.querySelector('.panel[data-panel="'+start+'"]')){go(start,false);history.replaceState({panel:start},'','#'+start);}
-  else{history.replaceState({panel:'dashboard'},'','#');}
+  if(start&&document.querySelector('.panel[data-panel="'+start+'"]')){go(start,false);safeState('replace',start);}
+  else{safeState('replace','dashboard');}
 </script>
 </body>
 </html>
